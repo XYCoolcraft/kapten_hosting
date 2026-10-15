@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Akun - KingStore</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">👑 TokoKaptenShop</div>
+  <a href="/" class="btn">Home</a>
+</header>
+
+<div class="section">
+  <div class="account-card">
+    <h2>👤 Akun Saya</h2>
+    <p>Nama: <strong id="userName">Loading...</strong></p>
+    <p>Email: <strong id="userEmail">Loading...</strong></p>
+    <button class="btn danger" id="logoutBtn">Logout</button>
+  </div>
+</div>
+
+<script type="module">
+import { auth } from "/js/firebase.js";
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    window.location.href = "/login";
+    return;
+  }
+  document.getElementById("userName").textContent = user.displayName || "User";
+  document.getElementById("userEmail").textContent = user.email;
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await signOut(auth);
+  window.location.href = "/login";
+});
+</script>
+
+</body>
+</html>
